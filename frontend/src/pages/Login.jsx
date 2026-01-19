@@ -34,8 +34,19 @@ const Login = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Redirect to intended page
-      navigate(from, { replace: true });
+      // Redirect based on role if no specific "from" location exists
+      if (!location.state?.from) {
+        if (user.role?.toLowerCase() === 'admin') {
+          navigate('/dashboard/admin', { replace: true });
+        } else if (user.role?.toLowerCase() === 'writer') {
+          navigate('/dashboard/writer', { replace: true });
+        } else {
+          navigate('/dashboard', { replace: true });
+        }
+      } else {
+        // Redirect to intended page
+        navigate(from, { replace: true });
+      }
     } catch (error) {
       setError(error.response?.data?.message || 'Login failed');
     } finally {

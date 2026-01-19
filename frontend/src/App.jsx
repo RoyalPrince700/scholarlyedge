@@ -10,6 +10,34 @@ import FinancialDashboard from './pages/FinancialDashboard';
 import UserManagement from './pages/UserManagement';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Navigate } from 'react-router-dom';
+
+// Dashboard Index Redirector
+const DashboardIndex = () => {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    try {
+      const user = JSON.parse(userData);
+      if (user.role?.toLowerCase() === 'admin') {
+        return <Navigate to="/dashboard/admin" replace />;
+      } else if (user.role?.toLowerCase() === 'writer') {
+        return <Navigate to="/dashboard/writer" replace />;
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+    }
+  }
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">
+        Welcome to ScholarlyEdge Nexus
+      </h1>
+      <p className="text-gray-600">
+        Select a dashboard from the sidebar to get started.
+      </p>
+    </div>
+  );
+};
 
 // Landing Page Component
 const LandingPage = () => {
@@ -68,14 +96,7 @@ function App() {
               index
               element={
                 <ProtectedRoute adminOnly={false}>
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-6">
-                      Welcome to ScholarlyEdge Nexus
-                    </h1>
-                    <p className="text-gray-600">
-                      Select a dashboard from the sidebar to get started.
-                    </p>
-                  </div>
+                  <DashboardIndex />
                 </ProtectedRoute>
               }
             />
