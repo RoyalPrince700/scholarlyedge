@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
+import scholarlyLogo from '../assets/scholarly.svg';
 import { authAPI } from '../services/api';
 import {
   LayoutDashboard,
@@ -87,7 +88,7 @@ const Layout = () => {
       `}>
         <div className="flex items-center justify-between h-16 px-4 border-b border-primary-800">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-8 w-auto" />
+            <img src={scholarlyLogo} alt="ScholarlyEdge" className="h-8 w-auto" />
             <span className="text-xl font-bold text-cream-50">ScholarlyEdge</span>
           </Link>
           <button
@@ -145,7 +146,7 @@ const Layout = () => {
               <Menu className="h-6 w-6" />
             </button>
             <div className="flex items-center gap-2">
-              <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-8 w-auto" />
+              <img src={scholarlyLogo} alt="ScholarlyEdge" className="h-8 w-auto" />
               <h1 className="text-lg font-semibold text-primary-900">ScholarlyEdge</h1>
             </div>
             <div className="w-6" /> {/* Spacer */}

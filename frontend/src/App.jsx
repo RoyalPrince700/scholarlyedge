@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import scholarlyLogo from './assets/scholarly.svg';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
@@ -45,7 +46,7 @@ const LandingPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-cream-100 to-cream-50 flex items-center justify-center px-4">
       <div className="max-w-4xl mx-auto text-center">
         <div className="mb-8 flex flex-col items-center">
-          <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-24 w-auto mb-6" />
+          <img src={scholarlyLogo} alt="ScholarlyEdge" className="h-24 w-auto mb-6" />
           <h2 className="text-4xl font-bold text-primary-900 mb-4">
             ScholarlyEdge Nexus
           </h2>

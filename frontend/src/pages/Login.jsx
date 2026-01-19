@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import scholarlyLogo from '../assets/scholarly.svg';
 import { authAPI } from '../services/api';
 
 const Login = () => {
@@ -63,7 +64,7 @@ const Login = () => {
             to="/"
             className="transition-opacity hover:opacity-80"
           >
-            <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-16 w-auto" />
+            <img src={scholarlyLogo} alt="ScholarlyEdge" className="h-16 w-auto" />
           </Link>
         </div>
 
