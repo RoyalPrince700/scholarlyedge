@@ -72,8 +72,8 @@ const FinancialDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+      <div className="flex h-[80vh] items-center justify-center bg-cream-50">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-700" />
       </div>
     );
   }
@@ -83,8 +83,8 @@ const FinancialDashboard = () => {
       title: 'Total Revenue',
       value: `₦${summary.totalRevenue.toLocaleString()}`,
       icon: TrendingUp,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-primary-700',
+      bgColor: 'bg-primary-50',
       trend: '+12%', // Mock trend
       trendColor: 'text-green-600'
     },
@@ -92,8 +92,8 @@ const FinancialDashboard = () => {
       title: 'Writer Fees',
       value: `₦${(summary.totalWriterFees || 0).toLocaleString()}`,
       icon: Briefcase,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      color: 'text-primary-800',
+      bgColor: 'bg-cream-200',
       trend: '+5%', // Mock trend
       trendColor: 'text-red-600'
     },
@@ -101,8 +101,8 @@ const FinancialDashboard = () => {
       title: 'Referral Fees',
       value: `₦${(summary.totalReferrals || 0).toLocaleString()}`,
       icon: TrendingDown,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-primary-900',
+      bgColor: 'bg-cream-300',
       trend: '+2%', // Mock trend
       trendColor: 'text-orange-600'
     },
@@ -110,22 +110,22 @@ const FinancialDashboard = () => {
       title: 'Net Profit',
       value: `₦${summary.netProfit.toLocaleString()}`,
       icon: DollarSign,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-primary-950',
+      bgColor: 'bg-cream-400',
       trend: '+18%', // Mock trend
       trendColor: 'text-green-600'
     }
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-cream-50 min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Financial Dashboard</h1>
-          <p className="text-gray-600 mt-2">Overview of revenue, expenses, and profitability.</p>
+          <h1 className="text-3xl font-bold text-primary-900">Financial Dashboard</h1>
+          <p className="text-primary-700 mt-2">Overview of revenue, expenses, and profitability.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="btn-outline flex items-center gap-2">
+          <button className="btn-outline flex items-center gap-2 bg-white border-cream-200">
             <Download className="h-4 w-4" />
             Export
           </button>
@@ -148,19 +148,19 @@ const FinancialDashboard = () => {
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="card">
+            <div key={index} className="card border-cream-200 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                   <Icon className={`h-6 w-6 ${stat.color}`} />
                 </div>
-                <span className={`text-sm font-medium ${stat.trendColor} flex items-center gap-1`}>
+                <span className={`text-sm font-bold ${stat.trendColor} flex items-center gap-1`}>
                   {stat.trendColor === 'text-green-600' ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                   {stat.trend}
                 </span>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                <p className="text-sm font-bold text-primary-500">{stat.title}</p>
+                <p className="text-3xl font-bold text-primary-900 mt-1">{stat.value}</p>
               </div>
             </div>
           );
@@ -168,51 +168,51 @@ const FinancialDashboard = () => {
       </div>
 
       {/* Transactions Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Transactions</h3>
-          <button className="text-primary-600 hover:text-primary-700 text-sm font-medium">View All</button>
+      <div className="bg-white rounded-lg shadow-sm border border-cream-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-cream-100 flex items-center justify-between bg-cream-50/50">
+          <h3 className="text-lg font-bold text-primary-900">Recent Transactions</h3>
+          <button className="text-primary-700 hover:text-primary-900 text-sm font-bold">View All</button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-cream-50 border-b border-cream-100">
               <tr>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Transaction</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Transaction</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Project</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Amount</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-cream-100">
               {records.length > 0 ? (
                 records.map((record) => (
-                  <tr key={record._id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={record._id} className="hover:bg-cream-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-full ${record.type === 'income' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                        <div className={`p-2 rounded-full ${record.type === 'income' ? 'bg-green-100 text-green-600' : 'bg-primary-50 text-primary-700'}`}>
                           {record.type === 'income' ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{record.description}</p>
-                          <p className="text-xs text-gray-500 uppercase">{record.category.replace('-', ' ')}</p>
+                          <p className="font-bold text-primary-900">{record.description}</p>
+                          <p className="text-[10px] text-primary-500 font-bold uppercase tracking-wider">{record.category.replace('-', ' ')}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-700">
-                        <Briefcase className="h-4 w-4 text-gray-400" />
+                      <div className="flex items-center gap-2 text-sm text-primary-700 font-medium">
+                        <Briefcase className="h-4 w-4 text-primary-400" />
                         {record.project?.title || 'N/A'}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-600 flex items-center gap-2">
+                      <div className="text-sm text-primary-600 flex items-center gap-2 font-medium">
                         <Calendar className="h-4 w-4" />
                         {new Date(record.transactionDate).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`font-bold ${record.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                      <span className={`font-bold ${record.type === 'income' ? 'text-green-600' : 'text-primary-700'}`}>
                         {record.type === 'income' ? '+' : '-'}₦{record.amount.toLocaleString()}
                       </span>
                     </td>
@@ -220,7 +220,7 @@ const FinancialDashboard = () => {
                       <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${
                         record.status === 'completed' ? 'bg-green-100 text-green-800' :
                         record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
+                        'bg-cream-100 text-primary-800'
                       }`}>
                         {record.status.toUpperCase()}
                       </span>
@@ -229,7 +229,7 @@ const FinancialDashboard = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan="5" className="px-6 py-12 text-center text-primary-500 font-medium">
                     No transactions recorded yet.
                   </td>
                 </tr>

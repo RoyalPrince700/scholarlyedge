@@ -78,21 +78,21 @@ const WriterDashboard = () => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'in-progress': return 'bg-blue-100 text-blue-800';
-      case 'Chapter 1 Completed': return 'bg-purple-100 text-purple-800';
-      case 'Chapter 2 Done': return 'bg-indigo-100 text-indigo-800';
-      case 'Chapter 3 Done': return 'bg-pink-100 text-pink-800';
-      case 'Chapter 4 Done': return 'bg-orange-100 text-orange-800';
-      case 'Chapter 5 Done': return 'bg-teal-100 text-teal-800';
+      case 'in-progress': return 'bg-primary-100 text-primary-800';
+      case 'Chapter 1 Completed': return 'bg-cream-100 text-primary-700';
+      case 'Chapter 2 Done': return 'bg-cream-200 text-primary-800';
+      case 'Chapter 3 Done': return 'bg-primary-50 text-primary-700';
+      case 'Chapter 4 Done': return 'bg-primary-100 text-primary-800';
+      case 'Chapter 5 Done': return 'bg-primary-200 text-primary-900';
       case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-cream-50 text-primary-600';
     }
   };
 
   if (loading && projects.length === 0) {
     return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+      <div className="flex h-[80vh] items-center justify-center bg-cream-50">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-700" />
       </div>
     );
   }
@@ -102,24 +102,24 @@ const WriterDashboard = () => {
       title: 'Active Projects',
       value: stats.activeProjects,
       icon: FileText,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
+      color: 'text-primary-700',
+      bgColor: 'bg-primary-50'
     },
     {
       title: 'Pending Start',
       value: stats.pendingProjects,
       icon: Clock,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50'
+      color: 'text-primary-800',
+      bgColor: 'bg-cream-200'
     }
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-cream-50 min-h-screen">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Writer Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage your assigned projects and track your progress.</p>
+          <h1 className="text-3xl font-bold text-primary-900">Writer Dashboard</h1>
+          <p className="text-primary-700 mt-2">Manage your assigned projects and track your progress.</p>
         </div>
       </div>
 
@@ -135,14 +135,14 @@ const WriterDashboard = () => {
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="card">
+            <div key={index} className="card border-cream-200 shadow-sm">
               <div className="flex items-center">
                 <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                   <Icon className={`h-6 w-6 ${stat.color}`} />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-sm font-medium text-primary-600">{stat.title}</p>
+                  <p className="text-2xl font-bold text-primary-900">{stat.value}</p>
                 </div>
               </div>
             </div>
@@ -152,41 +152,41 @@ const WriterDashboard = () => {
 
       {/* My Projects */}
       <div className="w-full">
-        <div className="card h-full">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary-600" />
+        <div className="card border-cream-200 h-full">
+          <h3 className="text-lg font-semibold text-primary-900 mb-6 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-primary-700" />
             My Assigned Projects
           </h3>
           
           <div className="space-y-6">
             {projects.length > 0 ? (
               projects.map((project) => (
-                <div key={project._id} className="p-5 border border-gray-200 rounded-xl hover:border-primary-200 transition-colors bg-gray-50/50">
+                <div key={project._id} className="p-5 border border-cream-100 rounded-xl hover:border-primary-200 transition-colors bg-white shadow-sm">
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-gray-900 text-lg">{project.title}</h4>
+                        <h4 className="font-bold text-primary-900 text-lg">{project.title}</h4>
                         <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded-full ${getStatusColor(project.status)}`}>
                           {project.status}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-4">{project.description}</p>
+                      <p className="text-sm text-primary-700 line-clamp-2 mb-4">{project.description}</p>
                       
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Clock className="h-3.5 w-3.5 text-blue-500" />
+                        <div className="flex items-center gap-2 text-xs text-primary-600">
+                          <Clock className="h-3.5 w-3.5" />
                           <span>Created: {new Date(project.createdAt).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Calendar className="h-3.5 w-3.5 text-orange-500" />
+                        <div className="flex items-center gap-2 text-xs text-primary-600">
+                          <Calendar className="h-3.5 w-3.5" />
                           <span>Due: {new Date(project.deadline).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <DollarSign className="h-3.5 w-3.5 text-green-500" />
-                          <span className="font-semibold text-gray-700">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</span>
+                        <div className="flex items-center gap-2 text-xs text-primary-600">
+                          <DollarSign className="h-3.5 w-3.5" />
+                          <span className="font-bold">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Clock className="h-3.5 w-3.5 text-purple-500" />
+                        <div className="flex items-center gap-2 text-xs text-primary-600">
+                          <TrendingUp className="h-3.5 w-3.5" />
                           <span>Progress: {project.progress || 0}%</span>
                         </div>
                       </div>
@@ -195,13 +195,13 @@ const WriterDashboard = () => {
                     <div className="flex flex-wrap items-center gap-2">
                       {!['completed', 'cancelled'].includes(project.status) && (
                         <div className="flex flex-col gap-2 w-full md:w-auto">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Update Status</p>
+                          <p className="text-[10px] font-bold text-primary-400 uppercase tracking-wider">Update Status</p>
                           <div className="flex flex-wrap gap-2">
                             {project.status === 'pending' && (
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'in-progress')}
-                                className="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-primary-700 text-white text-xs font-bold rounded-lg hover:bg-primary-800 disabled:opacity-50 transition-colors"
                               >
                                 Start Project
                               </button>
@@ -211,9 +211,9 @@ const WriterDashboard = () => {
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'Chapter 1 Completed')}
-                                className="px-3 py-1.5 bg-purple-600 text-white text-xs font-semibold rounded-lg hover:bg-purple-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-primary-600 text-white text-xs font-bold rounded-lg hover:bg-primary-700 disabled:opacity-50 transition-colors"
                               >
-                                Chapter 1 Done
+                                Ch 1 Done
                               </button>
                             )}
 
@@ -221,9 +221,9 @@ const WriterDashboard = () => {
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'Chapter 2 Done')}
-                                className="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-primary-700 text-white text-xs font-bold rounded-lg hover:bg-primary-800 disabled:opacity-50 transition-colors"
                               >
-                                Chapter 2 Done
+                                Ch 2 Done
                               </button>
                             )}
 
@@ -231,9 +231,9 @@ const WriterDashboard = () => {
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'Chapter 3 Done')}
-                                className="px-3 py-1.5 bg-pink-600 text-white text-xs font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-primary-800 text-white text-xs font-bold rounded-lg hover:bg-primary-900 disabled:opacity-50 transition-colors"
                               >
-                                Chapter 3 Done
+                                Ch 3 Done
                               </button>
                             )}
 
@@ -241,19 +241,9 @@ const WriterDashboard = () => {
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'Chapter 4 Done')}
-                                className="px-3 py-1.5 bg-orange-600 text-white text-xs font-semibold rounded-lg hover:bg-orange-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-primary-900 text-white text-xs font-bold rounded-lg hover:bg-black disabled:opacity-50 transition-colors"
                               >
-                                Chapter 4 Done
-                              </button>
-                            )}
-
-                            {['pending', 'in-progress', 'Chapter 1 Completed', 'Chapter 2 Done', 'Chapter 3 Done', 'Chapter 4 Done'].includes(project.status) && (
-                              <button 
-                                disabled={updatingId === project._id}
-                                onClick={() => handleStatusUpdate(project._id, 'Chapter 5 Done')}
-                                className="px-3 py-1.5 bg-teal-600 text-white text-xs font-semibold rounded-lg hover:bg-teal-700 disabled:opacity-50"
-                              >
-                                Chapter 5 Done
+                                Ch 4 Done
                               </button>
                             )}
 
@@ -261,9 +251,9 @@ const WriterDashboard = () => {
                               <button 
                                 disabled={updatingId === project._id}
                                 onClick={() => handleStatusUpdate(project._id, 'completed')}
-                                className="px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 disabled:opacity-50"
+                                className="px-3 py-1.5 bg-green-600 text-white text-xs font-bold rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
                               >
-                                Finalize & Complete
+                                Complete
                               </button>
                             )}
                           </div>

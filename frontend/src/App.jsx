@@ -28,11 +28,11 @@ const DashboardIndex = () => {
     }
   }
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">
+    <div className="p-6 bg-cream-50 min-h-screen">
+      <h1 className="text-3xl font-bold text-primary-900 mb-6">
         Welcome to ScholarlyEdge Nexus
       </h1>
-      <p className="text-gray-600">
+      <p className="text-primary-700 font-medium">
         Select a dashboard from the sidebar to get started.
       </p>
     </div>
@@ -42,14 +42,14 @@ const DashboardIndex = () => {
 // Landing Page Component
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-cream-100 to-cream-50 flex items-center justify-center px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-8">
-          <h1 className="text-6xl font-bold text-primary-600 mb-4">SE</h1>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="mb-8 flex flex-col items-center">
+          <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-24 w-auto mb-6" />
+          <h2 className="text-4xl font-bold text-primary-900 mb-4">
             ScholarlyEdge Nexus
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-primary-700 mb-8 font-medium">
             Your comprehensive platform for academic content management and collaboration.
           </p>
         </div>
@@ -57,13 +57,13 @@ const LandingPage = () => {
         <div className="space-y-4">
           <a
             href="/login"
-            className="inline-block btn mr-4"
+            className="inline-block btn mr-4 shadow-md"
           >
             Sign In
           </a>
           <a
             href="/register"
-            className="inline-block btn-secondary"
+            className="inline-block btn-secondary shadow-sm"
           >
             Get Started
           </a>
@@ -76,7 +76,7 @@ const LandingPage = () => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-cream-50">
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
@@ -152,9 +152,9 @@ function App() {
               path="profile"
               element={
                 <ProtectedRoute>
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-6">My Profile</h1>
-                    <p className="text-gray-600">Profile management coming soon...</p>
+                  <div className="p-6 bg-cream-50 min-h-screen">
+                    <h1 className="text-3xl font-bold text-primary-900 mb-6">My Profile</h1>
+                    <p className="text-primary-700 font-medium">Profile management coming soon...</p>
                   </div>
                 </ProtectedRoute>
               }

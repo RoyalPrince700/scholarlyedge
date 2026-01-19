@@ -208,34 +208,34 @@ const ProjectManagement = () => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'in-progress': return 'bg-blue-100 text-blue-800';
-      case 'Chapter 1 Completed': return 'bg-purple-100 text-purple-800';
-      case 'Chapter 2 Done': return 'bg-indigo-100 text-indigo-800';
-      case 'Chapter 3 Done': return 'bg-pink-100 text-pink-800';
-      case 'Chapter 4 Done': return 'bg-orange-100 text-orange-800';
-      case 'Chapter 5 Done': return 'bg-teal-100 text-teal-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'in-progress': return 'bg-primary-100 text-primary-800';
+      case 'Chapter 1 Completed': return 'bg-cream-100 text-primary-700';
+      case 'Chapter 2 Done': return 'bg-cream-200 text-primary-800';
+      case 'Chapter 3 Done': return 'bg-primary-50 text-primary-700';
+      case 'Chapter 4 Done': return 'bg-primary-100 text-primary-800';
+      case 'Chapter 5 Done': return 'bg-primary-200 text-primary-900';
+      default: return 'bg-cream-50 text-primary-600';
     }
   };
 
   if (loading && projects.length === 0) {
     return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+      <div className="flex h-[80vh] items-center justify-center bg-cream-50">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-700" />
       </div>
     );
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-cream-50 min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Project Management</h1>
-          <p className="text-gray-600 mt-2">Create, assign and track your projects.</p>
+          <h1 className="text-3xl font-bold text-primary-900">Project Management</h1>
+          <p className="text-primary-700 mt-2">Create, assign and track your projects.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="btn flex items-center justify-center gap-2"
+          className="btn flex items-center justify-center gap-2 shadow-sm"
         >
           <Plus className="h-5 w-5" />
           New Project
@@ -252,75 +252,75 @@ const ProjectManagement = () => {
       {/* Filters/Search placeholder */}
       <div className="flex flex-wrap items-center gap-4 mb-6">
         <div className="relative flex-1 min-w-[300px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-400" />
           <input 
             type="text" 
             placeholder="Search projects..." 
-            className="input pl-10"
+            className="input pl-10 border-cream-200 focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
-        <button className="btn-outline flex items-center gap-2">
+        <button className="btn-outline flex items-center gap-2 bg-white">
           <Filter className="h-4 w-4" />
           Filter
         </button>
       </div>
 
       {/* Project List */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-sm border border-cream-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-cream-50 border-b border-cream-100">
               <tr>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Writer</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Financials</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Created</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Deadline</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Project</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Writer</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Financials</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Created</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Deadline</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-xs font-bold text-primary-700 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-cream-100">
               {projects.length > 0 ? (
                 projects.map((project) => (
-                  <tr key={project._id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={project._id} className="hover:bg-cream-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-semibold text-gray-900">{project.title}</p>
-                        <p className="text-sm text-gray-500 truncate max-w-[200px]">{project.description}</p>
+                        <p className="font-bold text-primary-900">{project.title}</p>
+                        <p className="text-sm text-primary-600 truncate max-w-[200px]">{project.description}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-xs">
+                        <div className="h-8 w-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs border border-primary-200">
                           {project.assignedTo?.name?.charAt(0) || '?'}
                         </div>
-                        <span className="text-sm text-gray-700 font-medium">{project.assignedTo?.name || 'Unassigned'}</span>
+                        <span className="text-sm text-primary-800 font-semibold">{project.assignedTo?.name || 'Unassigned'}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm">
-                        <p className="text-green-600 font-medium">Rev: ₦{project.clientPrice?.toLocaleString() || 0}</p>
-                        <p className="text-red-600 font-medium">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</p>
+                        <p className="text-green-600 font-bold">Rev: ₦{project.clientPrice?.toLocaleString() || 0}</p>
+                        <p className="text-primary-700 font-bold">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</p>
                         {project.referralPrice > 0 && (
-                          <p className="text-orange-600 font-medium">Ref: ₦{project.referralPrice?.toLocaleString()}</p>
+                          <p className="text-orange-600 font-bold">Ref: ₦{project.referralPrice?.toLocaleString()}</p>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-primary-600">
                         <Clock className="h-4 w-4" />
                         {new Date(project.createdAt).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-primary-600">
                         <Calendar className="h-4 w-4" />
                         {new Date(project.deadline).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
+                      <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${getStatusColor(project.status)}`}>
                         {project.status}
                       </span>
                     </td>
@@ -328,18 +328,18 @@ const ProjectManagement = () => {
                       <div className="actions-menu inline-block">
                         <button 
                           onClick={() => setMenuOpenId(menuOpenId === project._id ? null : project._id)}
-                          className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                          className="text-primary-400 hover:text-primary-700 p-1.5 rounded-full hover:bg-cream-100 transition-colors"
                         >
                           <MoreVertical className="h-5 w-5" />
                         </button>
                         
                         {menuOpenId === project._id && (
-                          <div className="absolute right-6 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10 py-1 overflow-hidden">
+                          <div className="absolute right-6 mt-2 w-48 bg-white rounded-lg shadow-xl border border-cream-200 z-10 py-1 overflow-hidden">
                             <button 
                               onClick={() => handleEdit(project)}
-                              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-primary-800 hover:bg-cream-50 transition-colors"
                             >
-                              <Edit2 className="h-4 w-4 text-blue-500" />
+                              <Edit2 className="h-4 w-4 text-primary-500" />
                               Edit Project
                             </button>
                             {project.status !== 'cancelled' && (
@@ -359,7 +359,7 @@ const ProjectManagement = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan="7" className="px-6 py-12 text-center text-primary-500">
                     No projects found. Create your first project to get started!
                   </td>
                 </tr>
@@ -376,9 +376,9 @@ const ProjectManagement = () => {
             setIsModalOpen(false);
             setEditingProject(null);
           }}></div>
-          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900">
+          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-cream-200">
+            <div className="flex items-center justify-between p-6 border-b border-cream-100 bg-cream-50">
+              <h2 className="text-xl font-bold text-primary-900">
                 {editingProject ? 'Edit Project' : 'Create New Project'}
               </h2>
               <button 
@@ -386,7 +386,7 @@ const ProjectManagement = () => {
                   setIsModalOpen(false);
                   setEditingProject(null);
                 }} 
-                className="text-gray-400 hover:text-gray-600"
+                className="text-primary-400 hover:text-primary-700"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -395,7 +395,7 @@ const ProjectManagement = () => {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Project Title</label>
                   <input
                     required
                     type="text"
@@ -403,55 +403,55 @@ const ProjectManagement = () => {
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="e.g., Thesis on AI Ethics"
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Description</label>
                   <textarea
                     required
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                     rows="3"
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                     placeholder="Project details, requirements, etc."
                   ></textarea>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Client Name</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Client Name</label>
                   <input
                     required
                     type="text"
                     name="clientName"
                     value={formData.clientName}
                     onChange={handleChange}
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Client Email</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Client Email</label>
                   <input
                     type="email"
                     name="clientEmail"
                     value={formData.clientEmail}
                     onChange={handleChange}
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Assign Writer</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Assign Writer</label>
                   <select
                     required
                     disabled={!!editingProject}
                     name="assignedTo"
                     value={formData.assignedTo}
                     onChange={handleChange}
-                    className={`input ${editingProject ? 'bg-gray-100 cursor-not-allowed opacity-75' : ''}`}
+                    className={`input border-cream-200 focus:ring-primary-500 focus:border-primary-500 ${editingProject ? 'bg-cream-50 cursor-not-allowed opacity-75' : ''}`}
                   >
                     <option value="">Select a writer</option>
                     {writers.map(writer => (
@@ -459,24 +459,24 @@ const ProjectManagement = () => {
                     ))}
                   </select>
                   {editingProject && (
-                    <p className="text-[10px] text-gray-500 mt-1">To change writer, cancel this project and reassign.</p>
+                    <p className="text-[10px] text-primary-500 mt-1 font-medium">To change writer, cancel this project and reassign.</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Deadline</label>
                   <input
                     required
                     type="date"
                     name="deadline"
                     value={formData.deadline}
                     onChange={handleChange}
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Client Price (Revenue) ₦</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Client Price (Revenue) ₦</label>
                   <input
                     required
                     type="number"
@@ -484,12 +484,12 @@ const ProjectManagement = () => {
                     value={formData.clientPrice}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Writer Price (Pay) ₦</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Writer Price (Pay) ₦</label>
                   <input
                     required
                     type="number"
@@ -497,29 +497,29 @@ const ProjectManagement = () => {
                     value={formData.writerPrice}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Referral Price (Optional) ₦</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Referral Price (Optional) ₦</label>
                   <input
                     type="number"
                     name="referralPrice"
                     value={formData.referralPrice}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Priority</label>
                   <select
                     name="priority"
                     value={formData.priority}
                     onChange={handleChange}
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -529,12 +529,12 @@ const ProjectManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Category</label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="input"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                   >
                     <option value="academic-writing">Academic Writing</option>
                     <option value="research">Research</option>
@@ -581,31 +581,31 @@ const ProjectManagement = () => {
       {isCancelModalOpen && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setIsCancelModalOpen(false)}></div>
-          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md border border-cream-200">
+            <div className="flex items-center justify-between p-6 border-b border-cream-100 bg-cream-50 rounded-t-xl">
+              <h2 className="text-xl font-bold text-primary-900 flex items-center gap-2">
                 <Ban className="h-5 w-5 text-red-500" />
                 Cancel Project
               </h2>
-              <button onClick={() => setIsCancelModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setIsCancelModalOpen(false)} className="text-primary-400 hover:text-primary-700">
                 <X className="h-6 w-6" />
               </button>
             </div>
 
             <form onSubmit={submitCancelProject} className="p-6 space-y-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-primary-700 font-medium">
                 Please provide a reason for cancelling this project. This will be visible to the writer.
               </p>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Cancellation</label>
+                <label className="block text-sm font-bold text-primary-800 mb-1">Reason for Cancellation</label>
                 <textarea
                   required
                   rows="4"
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
                   placeholder="e.g., Client cancelled the order, scope changed, etc."
-                  className="input"
+                  className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
                 ></textarea>
               </div>
 
@@ -620,7 +620,7 @@ const ProjectManagement = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
+                  className="px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 disabled:opacity-50 flex items-center gap-2 shadow-sm transition-colors"
                 >
                   {submitting ? (
                     <>

@@ -164,11 +164,11 @@ const createProject = async (req, res) => {
 
     // Send assignment email to writer
     try {
-      await sendProjectAssignmentEmail(
+      sendProjectAssignmentEmail(
         writer.email,
         writer.name,
         project.title,
-        project.deadline.toLocaleDateString(),
+        new Date(project.deadline).toLocaleDateString(),
         project._id
       );
     } catch (emailError) {

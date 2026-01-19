@@ -42,25 +42,25 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-cream-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Logo */}
         <div className="flex justify-center">
           <Link
             to="/"
-            className="text-4xl font-bold text-primary-600 hover:text-primary-700 transition-colors"
+            className="transition-opacity hover:opacity-80"
           >
-            SE
+            <img src="/scholarly.svg" alt="ScholarlyEdge" className="h-16 w-auto" />
           </Link>
         </div>
 
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-primary-900">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-primary-700">
             Or{' '}
-            <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500">
+            <Link to="/login" className="font-medium text-primary-700 hover:text-primary-600 transition-colors">
               sign in to existing account
             </Link>
           </p>
@@ -74,7 +74,7 @@ const Register = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-primary-800">
                 Full Name
               </label>
               <input
@@ -90,7 +90,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-primary-800">
                 Email address
               </label>
               <input
@@ -107,7 +107,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-primary-800">
                 Password
               </label>
               <input

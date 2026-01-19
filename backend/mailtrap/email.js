@@ -32,7 +32,9 @@ const sendProjectAssignmentEmail = async (email, name, projectTitle, deadline, p
       .replace("{name}", name)
       .replace("{project_title}", projectTitle)
       .replace("{deadline}", deadline)
-      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/projects/${projectId}`);
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
+
+    console.log(`Attempting to send assignment email to ${email} for project ${projectTitle}`);
 
     await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
@@ -42,7 +44,7 @@ const sendProjectAssignmentEmail = async (email, name, projectTitle, deadline, p
       category: "Project Assignment",
     });
 
-    console.log("Project assignment email sent successfully");
+    console.log("Project assignment email sent successfully to writer");
   } catch (error) {
     console.error("Error sending project assignment email", error);
   }
@@ -53,7 +55,7 @@ const sendProjectUpdateEmail = async (email, name, projectTitle, projectId) => {
     const htmlContent = PROJECT_UPDATE_TEMPLATE
       .replace("{name}", name)
       .replace("{project_title}", projectTitle)
-      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/projects/${projectId}`);
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
 
     await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
@@ -80,7 +82,7 @@ const sendAdminProjectUpdateEmail = async (writerName, projectTitle, status, pro
       .replace("{writer_name}", writerName)
       .replace("{project_title}", projectTitle)
       .replace("{status}", status)
-      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/admin/projects/${projectId}`);
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
 
     await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
