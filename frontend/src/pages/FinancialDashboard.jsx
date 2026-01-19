@@ -20,6 +20,8 @@ const FinancialDashboard = () => {
   const [summary, setSummary] = useState({
     totalRevenue: 0,
     totalExpenses: 0,
+    totalWriterFees: 0,
+    totalReferrals: 0,
     netProfit: 0
   });
 
@@ -43,10 +45,20 @@ const FinancialDashboard = () => {
         const expenses = data
           .filter(r => r.type === 'expense')
           .reduce((acc, curr) => acc + curr.amount, 0);
+
+        const writerFees = data
+          .filter(r => r.category === 'writer-payment')
+          .reduce((acc, curr) => acc + curr.amount, 0);
+
+        const referrals = data
+          .filter(r => r.category === 'referral-payment')
+          .reduce((acc, curr) => acc + curr.amount, 0);
         
         setSummary({
           totalRevenue: revenue,
           totalExpenses: expenses,
+          totalWriterFees: writerFees,
+          totalReferrals: referrals,
           netProfit: revenue - expenses
         });
       }
@@ -77,13 +89,22 @@ const FinancialDashboard = () => {
       trendColor: 'text-green-600'
     },
     {
-      title: 'Total Expenses',
-      value: `₦${summary.totalExpenses.toLocaleString()}`,
-      icon: TrendingDown,
+      title: 'Writer Fees',
+      value: `₦${(summary.totalWriterFees || 0).toLocaleString()}`,
+      icon: Briefcase,
       color: 'text-red-600',
       bgColor: 'bg-red-50',
       trend: '+5%', // Mock trend
       trendColor: 'text-red-600'
+    },
+    {
+      title: 'Referral Fees',
+      value: `₦${(summary.totalReferrals || 0).toLocaleString()}`,
+      icon: TrendingDown,
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+      trend: '+2%', // Mock trend
+      trendColor: 'text-orange-600'
     },
     {
       title: 'Net Profit',
@@ -123,7 +144,7 @@ const FinancialDashboard = () => {
       )}
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (

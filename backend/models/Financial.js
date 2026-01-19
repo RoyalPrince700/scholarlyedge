@@ -8,7 +8,7 @@ const financialSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['project-payment', 'writer-payment', 'refund', 'commission', 'marketing', 'software', 'office', 'other'],
+    enum: ['project-payment', 'writer-payment', 'referral-payment', 'refund', 'commission', 'marketing', 'software', 'office', 'other'],
     required: [true, 'Category is required']
   },
   amount: {

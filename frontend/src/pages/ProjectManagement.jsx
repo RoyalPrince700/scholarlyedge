@@ -40,6 +40,7 @@ const ProjectManagement = () => {
     deadline: '',
     clientPrice: '',
     writerPrice: '',
+    referralPrice: '',
     priority: 'medium',
     category: 'academic-writing'
   });
@@ -98,6 +99,7 @@ const ProjectManagement = () => {
       deadline: project.deadline ? new Date(project.deadline).toISOString().split('T')[0] : '',
       clientPrice: project.clientPrice || '',
       writerPrice: project.writerPrice || '',
+      referralPrice: project.referralPrice || '',
       priority: project.priority || 'medium',
       category: project.category || 'academic-writing'
     });
@@ -159,6 +161,7 @@ const ProjectManagement = () => {
         deadline: formData.deadline,
         clientPrice: cleanNumber(formData.clientPrice),
         writerPrice: cleanNumber(formData.writerPrice),
+        referralPrice: cleanNumber(formData.referralPrice),
         priority: formData.priority,
         category: formData.category,
         budget: {
@@ -186,6 +189,7 @@ const ProjectManagement = () => {
           deadline: '',
           clientPrice: '',
           writerPrice: '',
+          referralPrice: '',
           priority: 'medium',
           category: 'academic-writing'
         });
@@ -207,6 +211,9 @@ const ProjectManagement = () => {
       case 'in-progress': return 'bg-blue-100 text-blue-800';
       case 'Chapter 1 Completed': return 'bg-purple-100 text-purple-800';
       case 'Chapter 2 Done': return 'bg-indigo-100 text-indigo-800';
+      case 'Chapter 3 Done': return 'bg-pink-100 text-pink-800';
+      case 'Chapter 4 Done': return 'bg-orange-100 text-orange-800';
+      case 'Chapter 5 Done': return 'bg-teal-100 text-teal-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -267,6 +274,7 @@ const ProjectManagement = () => {
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project</th>
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Writer</th>
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Financials</th>
+                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Created</th>
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Deadline</th>
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
@@ -294,6 +302,15 @@ const ProjectManagement = () => {
                       <div className="text-sm">
                         <p className="text-green-600 font-medium">Rev: ₦{project.clientPrice?.toLocaleString() || 0}</p>
                         <p className="text-red-600 font-medium">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</p>
+                        {project.referralPrice > 0 && (
+                          <p className="text-orange-600 font-medium">Ref: ₦{project.referralPrice?.toLocaleString()}</p>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Clock className="h-4 w-4" />
+                        {new Date(project.createdAt).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -478,6 +495,18 @@ const ProjectManagement = () => {
                     type="number"
                     name="writerPrice"
                     value={formData.writerPrice}
+                    onChange={handleChange}
+                    placeholder="0.00"
+                    className="input"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Referral Price (Optional) ₦</label>
+                  <input
+                    type="number"
+                    name="referralPrice"
+                    value={formData.referralPrice}
                     onChange={handleChange}
                     placeholder="0.00"
                     className="input"

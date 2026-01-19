@@ -138,6 +138,9 @@ const AdminDashboard = () => {
                       {project.status.toUpperCase()}
                     </span>
                     <p className="text-[10px] text-gray-400 mt-1">
+                      Created: {new Date(project.createdAt).toLocaleDateString()}
+                    </p>
+                    <p className="text-[10px] text-gray-400 mt-1">
                       Due: {new Date(project.deadline).toLocaleDateString()}
                     </p>
                   </div>

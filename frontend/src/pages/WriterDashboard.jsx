@@ -81,6 +81,9 @@ const WriterDashboard = () => {
       case 'in-progress': return 'bg-blue-100 text-blue-800';
       case 'Chapter 1 Completed': return 'bg-purple-100 text-purple-800';
       case 'Chapter 2 Done': return 'bg-indigo-100 text-indigo-800';
+      case 'Chapter 3 Done': return 'bg-pink-100 text-pink-800';
+      case 'Chapter 4 Done': return 'bg-orange-100 text-orange-800';
+      case 'Chapter 5 Done': return 'bg-teal-100 text-teal-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -169,17 +172,21 @@ const WriterDashboard = () => {
                       </div>
                       <p className="text-sm text-gray-600 line-clamp-2 mb-4">{project.description}</p>
                       
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Calendar className="h-3.5 w-3.5" />
+                          <Clock className="h-3.5 w-3.5 text-blue-500" />
+                          <span>Created: {new Date(project.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <Calendar className="h-3.5 w-3.5 text-orange-500" />
                           <span>Due: {new Date(project.deadline).toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <DollarSign className="h-3.5 w-3.5" />
+                          <DollarSign className="h-3.5 w-3.5 text-green-500" />
                           <span className="font-semibold text-gray-700">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                          <Clock className="h-3.5 w-3.5" />
+                          <Clock className="h-3.5 w-3.5 text-purple-500" />
                           <span>Progress: {project.progress || 0}%</span>
                         </div>
                       </div>
@@ -217,6 +224,36 @@ const WriterDashboard = () => {
                                 className="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-50"
                               >
                                 Chapter 2 Done
+                              </button>
+                            )}
+
+                            {['pending', 'in-progress', 'Chapter 1 Completed', 'Chapter 2 Done'].includes(project.status) && (
+                              <button 
+                                disabled={updatingId === project._id}
+                                onClick={() => handleStatusUpdate(project._id, 'Chapter 3 Done')}
+                                className="px-3 py-1.5 bg-pink-600 text-white text-xs font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50"
+                              >
+                                Chapter 3 Done
+                              </button>
+                            )}
+
+                            {['pending', 'in-progress', 'Chapter 1 Completed', 'Chapter 2 Done', 'Chapter 3 Done'].includes(project.status) && (
+                              <button 
+                                disabled={updatingId === project._id}
+                                onClick={() => handleStatusUpdate(project._id, 'Chapter 4 Done')}
+                                className="px-3 py-1.5 bg-orange-600 text-white text-xs font-semibold rounded-lg hover:bg-orange-700 disabled:opacity-50"
+                              >
+                                Chapter 4 Done
+                              </button>
+                            )}
+
+                            {['pending', 'in-progress', 'Chapter 1 Completed', 'Chapter 2 Done', 'Chapter 3 Done', 'Chapter 4 Done'].includes(project.status) && (
+                              <button 
+                                disabled={updatingId === project._id}
+                                onClick={() => handleStatusUpdate(project._id, 'Chapter 5 Done')}
+                                className="px-3 py-1.5 bg-teal-600 text-white text-xs font-semibold rounded-lg hover:bg-teal-700 disabled:opacity-50"
+                              >
+                                Chapter 5 Done
                               </button>
                             )}
 

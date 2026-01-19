@@ -166,10 +166,16 @@ const WriterFinance = () => {
                   Update to <strong>Chapter 1 Done</strong> to notify admin of early progress.
                 </p>
               </div>
-              <div className="p-4 border-l-4 border-indigo-500 bg-indigo-50 rounded-r-xl">
-                <p className="text-sm text-indigo-900 font-medium mb-1">60% Milestone</p>
-                <p className="text-xs text-indigo-700">
-                  Reaching <strong>Chapter 2 Done</strong> marks 60% completion of your project.
+              <div className="p-4 border-l-4 border-pink-500 bg-pink-50 rounded-r-xl">
+                <p className="text-sm text-pink-900 font-medium mb-1">Chapter 3 Milestone</p>
+                <p className="text-xs text-pink-700">
+                  Reaching <strong>Chapter 3 Done</strong> marks 60% completion of your project.
+                </p>
+              </div>
+              <div className="p-4 border-l-4 border-teal-500 bg-teal-50 rounded-r-xl">
+                <p className="text-sm text-teal-900 font-medium mb-1">Final Chapter</p>
+                <p className="text-xs text-teal-700">
+                  <strong>Chapter 5 Done</strong> means you're almost there! 95% progress reached.
                 </p>
               </div>
               <div className="p-4 border-l-4 border-green-500 bg-green-50 rounded-r-xl">

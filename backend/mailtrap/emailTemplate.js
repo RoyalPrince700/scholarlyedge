@@ -60,7 +60,62 @@ const PROJECT_ASSIGNMENT_TEMPLATE = `
 </html>
 `;
 
+const PROJECT_UPDATE_TEMPLATE = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Details Updated</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background: linear-gradient(to right, #FF9800, #F57C00); padding: 20px; text-align: center;">
+    <h1 style="color: white; margin: 0;">Project Update!</h1>
+  </div>
+  <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <p>Hello {name},</p>
+    <p>The details of your assigned project <strong>{project_title}</strong> have been updated by the admin.</p>
+    <p>Please log in to your dashboard to review the changes.</p>
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="{project_url}" style="background-color: #FF9800; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Project</a>
+    </div>
+    <p>Best regards,<br>The ScholarlyEdge Team</p>
+  </div>
+</body>
+</html>
+`;
+
+const ADMIN_PROJECT_UPDATE_TEMPLATE = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writer Updated Project</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background: linear-gradient(to right, #9C27B0, #7B1FA2); padding: 20px; text-align: center;">
+    <h1 style="color: white; margin: 0;">Writer Progress Update</h1>
+  </div>
+  <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <p>Hello Admin,</p>
+    <p>Writer <strong>{writer_name}</strong> has updated the status of project <strong>{project_title}</strong>.</p>
+    <div style="background-color: #fff; padding: 15px; border-left: 4px solid #9C27B0; margin: 20px 0;">
+      <p><strong>New Status:</strong> {status}</p>
+    </div>
+    <p>You can view the details in the admin dashboard.</p>
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="{project_url}" style="background-color: #9C27B0; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Project</a>
+    </div>
+    <p>Best regards,<br>ScholarlyEdge Nexus System</p>
+  </div>
+</body>
+</html>
+`;
+
 module.exports = {
   WELCOME_EMAIL_TEMPLATE,
   PROJECT_ASSIGNMENT_TEMPLATE,
+  PROJECT_UPDATE_TEMPLATE,
+  ADMIN_PROJECT_UPDATE_TEMPLATE,
 };

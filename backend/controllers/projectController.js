@@ -1,7 +1,11 @@
 const Project = require('../models/Project');
 const Financial = require('../models/Financial');
 const User = require('../models/User');
-const { sendProjectAssignmentEmail } = require('../mailtrap/email');
+const { 
+  sendProjectAssignmentEmail, 
+  sendProjectUpdateEmail, 
+  sendAdminProjectUpdateEmail 
+} = require('../mailtrap/email');
 
 // @desc    Get all projects
 // @route   GET /api/projects
@@ -45,6 +49,7 @@ const createProject = async (req, res) => {
       deadline,
       clientPrice,
       writerPrice,
+      referralPrice,
       priority,
       category,
       wordCount
@@ -61,6 +66,7 @@ const createProject = async (req, res) => {
     // Validate prices
     const clientPriceNum = Number(clientPrice);
     const writerPriceNum = Number(writerPrice);
+    const referralPriceNum = referralPrice ? Number(referralPrice) : 0;
 
     if (isNaN(clientPriceNum) || clientPriceNum < 0) {
       return res.status(400).json({
@@ -73,6 +79,13 @@ const createProject = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Writer price must be a valid positive number'
+      });
+    }
+
+    if (isNaN(referralPriceNum) || referralPriceNum < 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Referral price must be a valid positive number'
       });
     }
 
@@ -129,6 +142,7 @@ const createProject = async (req, res) => {
       deadline: deadlineDate,
       clientPrice: clientPriceNum,
       writerPrice: writerPriceNum,
+      referralPrice: referralPriceNum,
       priority: priority || 'medium',
       category: category || 'academic-writing',
       budget: {
@@ -164,8 +178,8 @@ const createProject = async (req, res) => {
 
     // Create financial records
     try {
-      await Promise.all([
-        Financial.create({
+      const financialRecords = [
+        {
           type: 'income',
           category: 'project-payment',
           amount: project.clientPrice,
@@ -174,8 +188,8 @@ const createProject = async (req, res) => {
           createdBy: req.user._id,
           status: 'pending',
           transactionDate: new Date()
-        }),
-        Financial.create({
+        },
+        {
           type: 'expense',
           category: 'writer-payment',
           amount: project.writerPrice,
@@ -185,8 +199,23 @@ const createProject = async (req, res) => {
           createdBy: req.user._id,
           status: 'pending',
           transactionDate: new Date()
-        })
-      ]);
+        }
+      ];
+
+      if (project.referralPrice > 0) {
+        financialRecords.push({
+          type: 'expense',
+          category: 'referral-payment',
+          amount: project.referralPrice,
+          description: `Referral fee for project: ${project.title}`,
+          project: project._id,
+          createdBy: req.user._id,
+          status: 'pending',
+          transactionDate: new Date()
+        });
+      }
+
+      await Financial.insertMany(financialRecords);
     } catch (financialError) {
       console.error('Error creating financial records:', financialError);
     }
@@ -296,7 +325,59 @@ const updateProject = async (req, res) => {
     project = await Project.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
-    });
+    }).populate('assignedTo', 'name email');
+
+    // Update financial records if prices were changed
+    if (req.user.role === 'admin' && (req.body.clientPrice !== undefined || req.body.writerPrice !== undefined || req.body.referralPrice !== undefined)) {
+      try {
+        if (req.body.clientPrice !== undefined) {
+          await Financial.findOneAndUpdate(
+            { project: project._id, category: 'project-payment', type: 'income' },
+            { amount: Number(req.body.clientPrice) }
+          );
+        }
+        if (req.body.writerPrice !== undefined) {
+          await Financial.findOneAndUpdate(
+            { project: project._id, category: 'writer-payment', type: 'expense' },
+            { amount: Number(req.body.writerPrice) }
+          );
+        }
+        if (req.body.referralPrice !== undefined) {
+          const referralPriceNum = Number(req.body.referralPrice);
+          if (referralPriceNum > 0) {
+            await Financial.findOneAndUpdate(
+              { project: project._id, category: 'referral-payment', type: 'expense' },
+              { 
+                $set: { amount: referralPriceNum },
+                $setOnInsert: {
+                  description: `Referral fee for project: ${project.title}`,
+                  project: project._id,
+                  createdBy: req.user._id,
+                  status: 'pending',
+                  transactionDate: new Date()
+                }
+              },
+              { upsert: true, new: true }
+            );
+          } else {
+            // If referral price is set to 0, remove the financial record
+            await Financial.findOneAndDelete({ project: project._id, category: 'referral-payment', type: 'expense' });
+          }
+        }
+      } catch (finError) {
+        console.error('Error updating financial records:', finError);
+      }
+    }
+
+    // Send update email to writer if admin edited it
+    if (req.user.role === 'admin' && project.assignedTo) {
+      sendProjectUpdateEmail(
+        project.assignedTo.email,
+        project.assignedTo.name,
+        project.title,
+        project._id
+      );
+    }
 
     res.status(200).json({
       success: true,
@@ -371,9 +452,15 @@ const updateProjectStatus = async (req, res) => {
       project.completedAt = Date.now();
       project.progress = 100;
     } else if (status === 'Chapter 1 Completed') {
-      project.progress = 30;
+      project.progress = 20;
     } else if (status === 'Chapter 2 Done') {
+      project.progress = 40;
+    } else if (status === 'Chapter 3 Done') {
       project.progress = 60;
+    } else if (status === 'Chapter 4 Done') {
+      project.progress = 80;
+    } else if (status === 'Chapter 5 Done') {
+      project.progress = 95;
     } else if (status === 'in-progress') {
       project.progress = 10;
     } else if (status === 'cancelled') {
@@ -390,6 +477,16 @@ const updateProjectStatus = async (req, res) => {
     }
 
     await project.save();
+
+    // Notify admin if writer updated status
+    if (req.user.role === 'writer') {
+      sendAdminProjectUpdateEmail(
+        req.user.name,
+        project.title,
+        status,
+        project._id
+      );
+    }
 
     res.status(200).json({
       success: true,

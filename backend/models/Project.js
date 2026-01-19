@@ -42,7 +42,7 @@ const projectSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'Chapter 1 Completed', 'Chapter 2 Done', 'in-progress', 'review', 'completed', 'cancelled'],
+    enum: ['pending', 'Chapter 1 Completed', 'Chapter 2 Done', 'Chapter 3 Done', 'Chapter 4 Done', 'Chapter 5 Done', 'in-progress', 'review', 'completed', 'cancelled'],
     default: 'pending'
   },
   priority: {
@@ -83,6 +83,11 @@ const projectSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Writer price is required'],
     min: [0, 'Writer price cannot be negative']
+  },
+  referralPrice: {
+    type: Number,
+    min: [0, 'Referral price cannot be negative'],
+    default: 0
   },
   progress: {
     type: Number,
