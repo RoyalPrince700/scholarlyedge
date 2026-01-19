@@ -36,7 +36,7 @@ const sendProjectAssignmentEmail = async (email, name, projectTitle, deadline, p
 
     console.log(`Attempting to send assignment email to ${email} for project ${projectTitle}`);
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
       to: email,
       subject: "New Project Assigned - ScholarlyEdge",
@@ -44,7 +44,16 @@ const sendProjectAssignmentEmail = async (email, name, projectTitle, deadline, p
       category: "Project Assignment",
     });
 
-    console.log("Project assignment email sent successfully to writer");
+    console.log("Project assignment email sent successfully to writer:", info.messageId);
+    
+    // Warning for sandbox usage in what looks like a production environment
+    if (transporter.options.host.includes("sandbox")) {
+      console.warn("NOTE: Email was sent to Mailtrap SANDBOX. It will not reach the real recipient's inbox.");
+    }
+    
+    if (info.accepted && info.accepted.length > 0) {
+      console.log("Email accepted by SMTP for:", info.accepted.join(", "));
+    }
   } catch (error) {
     console.error("Error sending project assignment email", error);
   }
@@ -57,14 +66,14 @@ const sendProjectUpdateEmail = async (email, name, projectTitle, projectId) => {
       .replace("{project_title}", projectTitle)
       .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
       to: email,
       subject: `Project Updated - ${projectTitle}`,
       html: htmlContent,
       category: "Project Update",
     });
-    console.log("Project update email sent to writer");
+    console.log("Project update email sent to writer:", info.messageId);
   } catch (error) {
     console.error("Error sending project update email", error);
   }
@@ -84,14 +93,14 @@ const sendAdminProjectUpdateEmail = async (writerName, projectTitle, status, pro
       .replace("{status}", status)
       .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,
       to: adminEmail,
       subject: `Writer Update: ${projectTitle}`,
       html: htmlContent,
       category: "Admin Notification",
     });
-    console.log("Status update email sent to admin");
+    console.log("Status update email sent to admin:", info.messageId);
   } catch (error) {
     console.error("Error sending admin project update email", error);
   }
