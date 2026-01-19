@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { sendWelcomeEmail } = require('../mailtrap/email');
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -58,6 +59,16 @@ const register = async (req, res) => {
 
     // Generate token
     const token = generateToken(user._id);
+
+    // Send welcome email if writer
+    if (user.role === 'writer') {
+      try {
+        await sendWelcomeEmail(user.email, user.name);
+      } catch (emailError) {
+        console.error('Error sending welcome email:', emailError);
+        // Don't fail registration if email fails
+      }
+    }
 
     res.status(201).json({
       success: true,

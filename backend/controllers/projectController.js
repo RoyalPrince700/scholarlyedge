@@ -1,6 +1,7 @@
 const Project = require('../models/Project');
 const Financial = require('../models/Financial');
 const User = require('../models/User');
+const { sendProjectAssignmentEmail } = require('../mailtrap/email');
 
 // @desc    Get all projects
 // @route   GET /api/projects
@@ -146,6 +147,20 @@ const createProject = async (req, res) => {
 
     // Create project
     const project = await Project.create(projectData);
+
+    // Send assignment email to writer
+    try {
+      await sendProjectAssignmentEmail(
+        writer.email,
+        writer.name,
+        project.title,
+        project.deadline.toLocaleDateString(),
+        project._id
+      );
+    } catch (emailError) {
+      console.error('Error sending assignment email:', emailError);
+      // Don't fail project creation if email fails
+    }
 
     // Create financial records
     try {
