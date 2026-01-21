@@ -32,7 +32,7 @@ const sendProjectAssignmentEmail = async (email, name, projectTitle, deadline, p
       .replace("{name}", name)
       .replace("{project_title}", projectTitle)
       .replace("{deadline}", deadline)
-      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/writer`);
 
     console.log(`Attempting to send assignment email to ${email} for project ${projectTitle}`);
 
@@ -64,7 +64,7 @@ const sendProjectUpdateEmail = async (email, name, projectTitle, projectId) => {
     const htmlContent = PROJECT_UPDATE_TEMPLATE
       .replace("{name}", name)
       .replace("{project_title}", projectTitle)
-      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/projects`);
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/writer`);
 
     const info = await transporter.sendMail({
       from: `"${sender.name}" <${sender.email}>`,

@@ -128,7 +128,7 @@ function App() {
             <Route
               path="projects"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly={true}>
                   <ProjectManagement />
                 </ProtectedRoute>
               }
@@ -144,7 +144,7 @@ function App() {
             <Route
               path="financial"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute adminOnly={true}>
                   <FinancialDashboard />
                 </ProtectedRoute>
               }

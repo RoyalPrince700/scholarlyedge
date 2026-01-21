@@ -20,7 +20,10 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 
           // Check admin access if required
           if (adminOnly && parsedUser.role?.toLowerCase() !== 'admin') {
+            console.warn('ProtectedRoute: Access denied. Admin only route accessed by:', parsedUser.role);
             setIsAuthenticated(false);
+          } else {
+            console.log('ProtectedRoute: Access granted for role:', parsedUser.role);
           }
         } catch (error) {
           console.error('Error parsing user data:', error);

@@ -62,9 +62,16 @@ const ProjectManagement = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      console.log('ProjectManagement: Fetching projects and writers...');
       const [projectsRes, usersRes] = await Promise.all([
-        projectsAPI.getProjects(),
-        usersAPI.getUsers()
+        projectsAPI.getProjects().catch(e => {
+          console.error('ProjectManagement: projectsAPI.getProjects failed', e.response?.status, e.response?.data || e.message);
+          throw e;
+        }),
+        usersAPI.getUsers().catch(e => {
+          console.error('ProjectManagement: usersAPI.getUsers failed', e.response?.status, e.response?.data || e.message);
+          throw e;
+        })
       ]);
 
       if (projectsRes.data.success) {
@@ -76,7 +83,7 @@ const ProjectManagement = () => {
         setWriters(writerList);
       }
     } catch (err) {
-      console.error('Error fetching data:', err);
+      console.error('Error fetching data in ProjectManagement (combined):', err);
       setError('Failed to load projects or writers');
     } finally {
       setLoading(false);

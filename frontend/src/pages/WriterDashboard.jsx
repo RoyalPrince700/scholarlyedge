@@ -6,7 +6,8 @@ import {
   AlertCircle, 
   DollarSign, 
   Loader2,
-  Calendar
+  Calendar,
+  TrendingUp
 } from 'lucide-react';
 import { projectsAPI } from '../services/api';
 
@@ -52,6 +53,10 @@ const WriterDashboard = () => {
       }
     } catch (err) {
       console.error('Error fetching writer data:', err);
+      if (err.response) {
+        console.error('Error response status:', err.response.status);
+        console.error('Error response data:', err.response.data);
+      }
       setError('Failed to load your projects');
     } finally {
       setLoading(false);
