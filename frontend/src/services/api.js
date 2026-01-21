@@ -65,6 +65,7 @@ export const projectsAPI = {
   deleteProject: (id) => api.delete(`/projects/${id}`),
   assignProject: (id, assignmentData) => api.put(`/projects/${id}/assign`, assignmentData),
   updateStatus: (id, statusData) => api.put(`/projects/${id}/status`, statusData),
+  recordPayment: (id, paymentData) => api.post(`/projects/${id}/payment`, paymentData),
 };
 
 // Financial API

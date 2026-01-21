@@ -39,11 +39,11 @@ const FinancialDashboard = () => {
         
         // Aggregate data
         const revenue = data
-          .filter(r => r.type === 'income')
+          .filter(r => r.type === 'income' && r.status === 'completed')
           .reduce((acc, curr) => acc + curr.amount, 0);
         
         const expenses = data
-          .filter(r => r.type === 'expense')
+          .filter(r => r.type === 'expense' && r.status === 'completed')
           .reduce((acc, curr) => acc + curr.amount, 0);
 
         const writerFees = data

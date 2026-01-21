@@ -3,7 +3,8 @@ const {
   WELCOME_EMAIL_TEMPLATE, 
   PROJECT_ASSIGNMENT_TEMPLATE,
   PROJECT_UPDATE_TEMPLATE,
-  ADMIN_PROJECT_UPDATE_TEMPLATE 
+  ADMIN_PROJECT_UPDATE_TEMPLATE,
+  PROJECT_DEADLINE_REMINDER_TEMPLATE
 } = require("./emailTemplate");
 
 const sendWelcomeEmail = async (email, name) => {
@@ -106,9 +107,39 @@ const sendAdminProjectUpdateEmail = async (writerName, projectTitle, status, pro
   }
 };
 
+const sendProjectDeadlineReminderEmail = async (email, name, projectTitle, deadline, daysLeft) => {
+  try {
+    const timeLeftText = daysLeft === 0 ? "Due today" : `${daysLeft} day(s) remaining`;
+    const htmlContent = PROJECT_DEADLINE_REMINDER_TEMPLATE
+      .replace("{name}", name)
+      .replace("{project_title}", projectTitle)
+      .replace("{deadline}", deadline)
+      .replace("{time_left}", timeLeftText)
+      .replace("{project_url}", `${process.env.FRONTEND_URL || "http://localhost:5173"}/dashboard/writer`);
+
+    const subject =
+      daysLeft === 0
+        ? `Deadline Today: ${projectTitle}`
+        : `Reminder: ${projectTitle} is due in ${daysLeft} day(s)`;
+
+    const info = await transporter.sendMail({
+      from: `"${sender.name}" <${sender.email}>`,
+      to: email,
+      subject,
+      html: htmlContent,
+      category: "Project Deadline Reminder",
+    });
+
+    console.log("Project deadline reminder email sent:", info.messageId);
+  } catch (error) {
+    console.error("Error sending project deadline reminder email", error);
+  }
+};
+
 module.exports = {
   sendWelcomeEmail,
   sendProjectAssignmentEmail,
   sendProjectUpdateEmail,
   sendAdminProjectUpdateEmail,
+  sendProjectDeadlineReminderEmail,
 };

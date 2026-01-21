@@ -140,6 +140,20 @@ const projectSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
+  amountPaid: {
+    type: Number,
+    default: 0,
+    min: [0, 'Amount paid cannot be negative']
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['unpaid', 'partially-paid', 'fully-paid'],
+    default: 'unpaid'
+  },
+  reminderEmails: {
+    threeDaysBeforeSentAt: Date,
+    deadlineDaySentAt: Date
+  },
   completedAt: Date
 }, {
   timestamps: true // Replaces manual hooks

@@ -180,16 +180,6 @@ const createProject = async (req, res) => {
     try {
       const financialRecords = [
         {
-          type: 'income',
-          category: 'project-payment',
-          amount: project.clientPrice,
-          description: `Revenue from project: ${project.title}`,
-          project: project._id,
-          createdBy: req.user._id,
-          status: 'pending',
-          transactionDate: new Date()
-        },
-        {
           type: 'expense',
           category: 'writer-payment',
           amount: project.writerPrice,
@@ -328,14 +318,8 @@ const updateProject = async (req, res) => {
     }).populate('assignedTo', 'name email');
 
     // Update financial records if prices were changed
-    if (req.user.role === 'admin' && (req.body.clientPrice !== undefined || req.body.writerPrice !== undefined || req.body.referralPrice !== undefined)) {
+    if (req.user.role === 'admin' && (req.body.writerPrice !== undefined || req.body.referralPrice !== undefined)) {
       try {
-        if (req.body.clientPrice !== undefined) {
-          await Financial.findOneAndUpdate(
-            { project: project._id, category: 'project-payment', type: 'income' },
-            { amount: Number(req.body.clientPrice) }
-          );
-        }
         if (req.body.writerPrice !== undefined) {
           await Financial.findOneAndUpdate(
             { project: project._id, category: 'writer-payment', type: 'expense' },
@@ -501,11 +485,93 @@ const updateProjectStatus = async (req, res) => {
   }
 };
 
+// @desc    Record project payment
+// @route   POST /api/projects/:id/payment
+// @access  Private/Admin
+const recordProjectPayment = async (req, res) => {
+  try {
+    const { amount, paymentMethod, notes, isFullPayment } = req.body;
+    
+    if (!amount && !isFullPayment) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an amount or mark as full payment'
+      });
+    }
+
+    let project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
+    }
+
+    const totalBudget = project.clientPrice;
+    let paymentAmount = Number(amount) || 0;
+    
+    if (isFullPayment) {
+      paymentAmount = totalBudget - project.amountPaid;
+    }
+
+    if (paymentAmount <= 0 && !isFullPayment) {
+      return res.status(400).json({
+        success: false,
+        message: 'Payment amount must be greater than 0'
+      });
+    }
+
+    // Create financial record for this payment
+    const financialRecord = await Financial.create({
+      type: 'income',
+      category: 'project-payment',
+      amount: paymentAmount,
+      description: `Payment for project: ${project.title}${isFullPayment ? ' (Full Payment)' : ' (Part Payment)'}`,
+      project: project._id,
+      paymentMethod: paymentMethod || 'bank-transfer',
+      status: 'completed',
+      transactionDate: new Date(),
+      notes: notes || '',
+      createdBy: req.user._id
+    });
+
+    // Update project payment info
+    project.amountPaid += paymentAmount;
+    
+    if (project.amountPaid >= totalBudget) {
+      project.paymentStatus = 'fully-paid';
+    } else if (project.amountPaid > 0) {
+      project.paymentStatus = 'partially-paid';
+    } else {
+      project.paymentStatus = 'unpaid';
+    }
+
+    await project.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Payment recorded successfully',
+      data: {
+        project,
+        financialRecord
+      }
+    });
+  } catch (error) {
+    console.error('Error recording payment:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   getProjects,
   createProject,
   getProject,
   updateProject,
   deleteProject,
-  updateProjectStatus
+  updateProjectStatus,
+  recordProjectPayment
 };

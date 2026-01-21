@@ -14,7 +14,8 @@ import {
   X,
   Edit2,
   Trash2,
-  Ban
+  Ban,
+  CreditCard
 } from 'lucide-react';
 import { projectsAPI, usersAPI } from '../services/api';
 
@@ -30,6 +31,16 @@ const ProjectManagement = () => {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [cancellingProjectId, setCancellingProjectId] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
+  
+  // Payment states
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedProjectForPayment, setSelectedProjectForPayment] = useState(null);
+  const [paymentFormData, setPaymentFormData] = useState({
+    amount: '',
+    paymentMethod: 'bank-transfer',
+    notes: '',
+    isFullPayment: false
+  });
 
   const [formData, setFormData] = useState({
     title: '',
@@ -118,6 +129,46 @@ const ProjectManagement = () => {
     setCancellingProjectId(projectId);
     setIsCancelModalOpen(true);
     setMenuOpenId(null);
+  };
+
+  const handleOpenPaymentModal = (project) => {
+    setSelectedProjectForPayment(project);
+    setPaymentFormData({
+      amount: '',
+      paymentMethod: 'bank-transfer',
+      notes: '',
+      isFullPayment: false
+    });
+    setIsPaymentModalOpen(true);
+    setMenuOpenId(null);
+  };
+
+  const submitPayment = async (e) => {
+    e.preventDefault();
+    if (!paymentFormData.amount && !paymentFormData.isFullPayment) {
+      alert('Please enter an amount or select full payment');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const response = await projectsAPI.recordPayment(selectedProjectForPayment._id, {
+        amount: paymentFormData.amount,
+        paymentMethod: paymentFormData.paymentMethod,
+        notes: paymentFormData.notes,
+        isFullPayment: paymentFormData.isFullPayment
+      });
+
+      if (response.data.success) {
+        setIsPaymentModalOpen(false);
+        fetchData();
+      }
+    } catch (err) {
+      console.error('Error recording payment:', err);
+      alert(err.response?.data?.message || 'Failed to record payment');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const submitCancelProject = async (e) => {
@@ -307,10 +358,12 @@ const ProjectManagement = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm">
-                        <p className="text-green-600 font-bold">Rev: ₦{project.clientPrice?.toLocaleString() || 0}</p>
-                        <p className="text-primary-700 font-bold">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</p>
+                        <p className="text-primary-900 font-bold">Rev: ₦{project.clientPrice?.toLocaleString() || 0}</p>
+                        <p className="text-green-600 font-bold">Paid: ₦{project.amountPaid?.toLocaleString() || 0}</p>
+                        <p className="text-orange-600 font-bold">Bal: ₦{(project.clientPrice - (project.amountPaid || 0)).toLocaleString()}</p>
+                        <p className="text-primary-500 font-medium mt-1">Pay: ₦{project.writerPrice?.toLocaleString() || 0}</p>
                         {project.referralPrice > 0 && (
-                          <p className="text-orange-600 font-bold">Ref: ₦{project.referralPrice?.toLocaleString()}</p>
+                          <p className="text-red-500 font-medium">Ref: ₦{project.referralPrice?.toLocaleString()}</p>
                         )}
                       </div>
                     </td>
@@ -349,6 +402,15 @@ const ProjectManagement = () => {
                               <Edit2 className="h-4 w-4 text-primary-500" />
                               Edit Project
                             </button>
+                            {project.paymentStatus !== 'fully-paid' && (
+                              <button 
+                                onClick={() => handleOpenPaymentModal(project)}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-green-700 hover:bg-green-50 transition-colors"
+                              >
+                                <CreditCard className="h-4 w-4 text-green-600" />
+                                Record Payment
+                              </button>
+                            )}
                             {project.status !== 'cancelled' && (
                               <button 
                                 onClick={() => handleCancelProject(project._id)}
@@ -636,6 +698,115 @@ const ProjectManagement = () => {
                     </>
                   ) : (
                     'Confirm Cancellation'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Recording Modal */}
+      {isPaymentModalOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsPaymentModalOpen(false)}></div>
+          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md border border-cream-200">
+            <div className="flex items-center justify-between p-6 border-b border-cream-100 bg-cream-50 rounded-t-xl">
+              <h2 className="text-xl font-bold text-primary-900 flex items-center gap-2">
+                <CreditCard className="h-5 w-5 text-green-600" />
+                Record Payment
+              </h2>
+              <button onClick={() => setIsPaymentModalOpen(false)} className="text-primary-400 hover:text-primary-700">
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <form onSubmit={submitPayment} className="p-6 space-y-4">
+              <div className="bg-cream-50 p-4 rounded-lg border border-cream-100 mb-4">
+                <p className="text-sm font-bold text-primary-800">{selectedProjectForPayment?.title}</p>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div>
+                    <p className="text-[10px] text-primary-500 uppercase font-bold">Total Budget</p>
+                    <p className="font-bold text-primary-900">₦{selectedProjectForPayment?.clientPrice?.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-primary-500 uppercase font-bold">Balance</p>
+                    <p className="font-bold text-orange-600">₦{(selectedProjectForPayment?.clientPrice - (selectedProjectForPayment?.amountPaid || 0)).toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 mb-4">
+                <input 
+                  type="checkbox" 
+                  id="fullPayment" 
+                  checked={paymentFormData.isFullPayment}
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, isFullPayment: e.target.checked }))}
+                  className="rounded border-cream-300 text-primary-600 focus:ring-primary-500"
+                />
+                <label htmlFor="fullPayment" className="text-sm font-bold text-primary-800">Full Balance Payment</label>
+              </div>
+              
+              {!paymentFormData.isFullPayment && (
+                <div>
+                  <label className="block text-sm font-bold text-primary-800 mb-1">Payment Amount ₦</label>
+                  <input
+                    required={!paymentFormData.isFullPayment}
+                    type="number"
+                    value={paymentFormData.amount}
+                    onChange={(e) => setPaymentFormData(prev => ({ ...prev, amount: e.target.value }))}
+                    placeholder="Enter amount paid"
+                    className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-bold text-primary-800 mb-1">Payment Method</label>
+                <select
+                  value={paymentFormData.paymentMethod}
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                  className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
+                >
+                  <option value="bank-transfer">Bank Transfer</option>
+                  <option value="cash">Cash</option>
+                  <option value="paypal">PayPal</option>
+                  <option value="stripe">Stripe</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-primary-800 mb-1">Notes (Optional)</label>
+                <textarea
+                  rows="2"
+                  value={paymentFormData.notes}
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Reference number, date, etc."
+                  className="input border-cream-200 focus:ring-primary-500 focus:border-primary-500"
+                ></textarea>
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsPaymentModalOpen(false)}
+                  className="btn-secondary"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2 shadow-sm transition-colors"
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Record Payment'
                   )}
                 </button>
               </div>
